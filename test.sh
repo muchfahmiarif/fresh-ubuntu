@@ -1,18 +1,27 @@
 #!/usr/bin/env bash
-set -euo pipefail  # strict mode: exit on error, undefined vars, pipe fail
+set -euo pipefail
 
 ZSHRC="$HOME/.zshrc"
+BASHRC="$HOME/.bashrc"
 LINE='export MY_VAR=hello-world'
 
-touch "$ZSHRC"
+touch "$ZSHRC" "$BASHRC"
 
-if ! grep -qxF "$LINE" "$ZSHRC"; then
-  echo "$LINE" >> "$ZSHRC"
-  echo "✓ Added to $ZSHRC"
-else
-  echo "✓ Line already exists"
-fi
+# Write to both files
+for FILE in "$ZSHRC" "$BASHRC"; do
+  if ! grep -qxF "$LINE" "$FILE"; then
+    echo "$LINE" >> "$FILE"
+    echo "✓ Added to $FILE"
+  else
+    echo "✓ Already exists in $FILE"
+  fi
+done
 
-# Running MY_VAR
-echo "✓ Reloaded ~/.zshrc - MY_VAR is now available"
-echo "Test: echo \$MY_VAR"
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "✅ Install complete!"
+echo ""
+echo "  Apply now (bash):  source ~/.bashrc"
+echo "  Apply now (zsh):   source ~/.zshrc"
+echo "  Or open a new terminal tab."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
